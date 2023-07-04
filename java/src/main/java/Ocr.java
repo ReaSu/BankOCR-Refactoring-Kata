@@ -3,17 +3,11 @@ import java.util.ArrayList;
 
 public class Ocr {
 
-	private static final char[][][] NUMERALS = new char[][][] {
-			{ " _  ".toCharArray(), "| | ".toCharArray(), "|_| ".toCharArray(), "    ".toCharArray() },
-			{ "    ".toCharArray(), "  | ".toCharArray(), "  | ".toCharArray(), "    ".toCharArray() },
-			{ " _  ".toCharArray(), " _| ".toCharArray(), "|_  ".toCharArray(), "    ".toCharArray() },
-			{ " _  ".toCharArray(), " _| ".toCharArray(), " _| ".toCharArray(), "    ".toCharArray() },
-			{ "    ".toCharArray(), "|_| ".toCharArray(), "  | ".toCharArray(), "    ".toCharArray() },
-			{ " _  ".toCharArray(), "|_  ".toCharArray(), " _| ".toCharArray(), "    ".toCharArray() },
-			{ " _  ".toCharArray(), "|_  ".toCharArray(), "|_| ".toCharArray(), "    ".toCharArray() },
-			{ " _  ".toCharArray(), "  | ".toCharArray(), "  | ".toCharArray(), "    ".toCharArray() },
-			{ " _  ".toCharArray(), "|_| ".toCharArray(), "|_| ".toCharArray(), "    ".toCharArray() },
-			{ " _  ".toCharArray(), "|_| ".toCharArray(), " _| ".toCharArray(), "    ".toCharArray() } };
+	private static final String[][] NUMERALS = new String[][] { { " _  ", "| | ", "|_| ", "    " },
+			{ "    ", "  | ", "  | ", "    " }, { " _  ", " _| ", "|_  ", "    " }, { " _  ", " _| ", " _| ", "    " },
+			{ "    ", "|_| ", "  | ", "    " }, { " _  ", "|_  ", " _| ", "    " }, { " _  ", "|_  ", "|_| ", "    " },
+			{ " _  ", "  | ", "  | ", "    " }, { " _  ", "|_| ", "|_| ", "    " },
+			{ " _  ", "|_| ", " _| ", "    " } };
 
 	public static List<String> parse(String... lines) {
 		final List<String> result = new ArrayList<String>();
@@ -25,10 +19,9 @@ public class Ocr {
 				for (int numeral = 0; numeral <= 9; ++numeral) {
 					boolean ok = true;
 					for (int row = 0; row < 4; ++row) {
-						for (int col = 0; col < 4; ++col) {
-							if (NUMERALS[numeral][row][col] != lines[i + row].charAt(4 * pos + col)) {
-								ok = false;
-							}
+						String otherString = lines[i + row].substring(4 * pos, 4 * pos + 4);
+						if (!NUMERALS[numeral][row].equals(otherString)) {
+							ok = false;
 						}
 					}
 					if (ok) {
@@ -38,8 +31,8 @@ public class Ocr {
 					}
 				}
 			}
-			if(sb.indexOf("?") > -1) {
-				marker = " ILL";				
+			if (sb.indexOf("?") > -1) {
+				marker = " ILL";
 			}
 			sb.append(marker);
 			result.add(sb.toString());
