@@ -11,9 +11,13 @@ import java.util.List;
  * Output consists of accountNumbers
  * each accountNumber is made up of 9 digits (or ?) plus a marker
  * a marker is 4 chars wide, and either empty (spaces) or " ILL" if accountNumber contains at least one "?"
+ * 
+ * There's a blueprint of each digit, input is compared to those for translation.
  */
 
 public class Ocr {
+	static List<Blueprint> blueprints = new ArrayList<Blueprint>();
+	
 	static List<Blueprint> initBlueprints() {
 		Blueprint zero = new NumberZero();
 		Blueprint one = new NumberOne();
@@ -29,28 +33,18 @@ public class Ocr {
 	}
 
 	public static List<String> parse(String... lines) {
+		blueprints.addAll(initBlueprints());
 		final List<String> result = new ArrayList<String>();
-		List<Blueprint> blueprints = initBlueprints();
 		for (int i = 0; i < lines.length; i += 4) {
-			StringBuilder sb = new StringBuilder();
-			String marker = "    ";
 			ArrayList<List<String>> inputDigits = new ArrayList<List<String>>();
 			for (int pos = 0; pos < 9; ++pos) {
 				inputDigits.add(nextInputDigit(i, pos, lines));
 				
 			}
-			for (List<String> block: inputDigits) {
-				
-				String appendage = "?";
-				for (Blueprint current : blueprints) {
-					int foundDigit = current.correspondsTo(block);
-					if (foundDigit != -1) {
-						appendage = String.valueOf(foundDigit);
-						break;
-					}
-				}
-				sb.append(appendage);
-				
+			StringBuilder sb = new StringBuilder();
+			String marker = "    ";
+			for (List<String> inputDigit: inputDigits) {	
+				sb.append(parseNextDigit(inputDigit));
 			}
 			if (sb.indexOf("?") > -1) {
 				marker = " ILL";
@@ -58,7 +52,20 @@ public class Ocr {
 			sb.append(marker);
 			result.add(sb.toString());
 		}
+		
 		return result;
+	}
+
+	private static String parseNextDigit(List<String> inputDigit) {
+		String appendage = "?";
+		for (Blueprint current : blueprints) {
+			int foundDigit = current.correspondsTo(inputDigit);
+			if (foundDigit != -1) {
+				appendage = String.valueOf(foundDigit);
+				break;
+			}
+		}
+		return appendage;
 	}
 
 	private static List<String> nextInputDigit(int i, int pos, String... lines) {
