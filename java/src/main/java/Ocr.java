@@ -36,6 +36,28 @@ public class Ocr {
 	public static List<String> parse(String... lines) {
 		blueprints.addAll(initBlueprints());
 		final List<String> result = new ArrayList<String>();
+		List<InputNumber> inputNumbers = parseInput(lines);		
+		for (InputNumber inputNumber : inputNumbers) {
+			result.add(translateNumber(inputNumber));
+		}
+
+		return result;
+	}
+
+	private static String translateNumber(InputNumber inputNumber) {
+		StringBuilder sb = new StringBuilder();
+		String marker = "    ";
+		for (InputDigit inputDigit : inputNumber) {
+			sb.append(parseNextDigit(inputDigit));
+		}
+		if (sb.indexOf("?") > -1) {
+			marker = " ILL";
+		}
+		sb.append(marker);
+		return sb.toString();
+	}
+
+	private static List<InputNumber> parseInput(String... lines) {
 		List<InputNumber> inputNumbers = new ArrayList<InputNumber>();
 		for (int i = 0; i < lines.length; i += 4) {
 			InputNumber inputNumber = new InputNumber();
@@ -45,20 +67,7 @@ public class Ocr {
 			}
 			inputNumbers.add(inputNumber);
 		}
-		for (InputNumber inputNumber : inputNumbers) {
-			StringBuilder sb = new StringBuilder();
-			String marker = "    ";
-			for (InputDigit inputDigit : inputNumber) {
-				sb.append(parseNextDigit(inputDigit));
-			}
-			if (sb.indexOf("?") > -1) {
-				marker = " ILL";
-			}
-			sb.append(marker);
-			result.add(sb.toString());
-		}
-
-		return result;
+		return inputNumbers;
 	}
 
 	private static String parseNextDigit(InputDigit inputDigit) {
