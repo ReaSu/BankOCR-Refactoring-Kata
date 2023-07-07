@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Iterator;
 import java.util.List;
 
 /*
@@ -17,7 +18,7 @@ import java.util.List;
 
 public class Ocr {
 	static List<Blueprint> blueprints = new ArrayList<Blueprint>();
-	
+
 	static List<Blueprint> initBlueprints() {
 		Blueprint zero = new NumberZero();
 		Blueprint one = new NumberOne();
@@ -35,15 +36,19 @@ public class Ocr {
 	public static List<String> parse(String... lines) {
 		blueprints.addAll(initBlueprints());
 		final List<String> result = new ArrayList<String>();
+		List<InputNumber> inputNumbers = new ArrayList<InputNumber>();
 		for (int i = 0; i < lines.length; i += 4) {
-			ArrayList<List<String>> inputDigits = new ArrayList<List<String>>();
+			InputNumber inputNumber = new InputNumber();
 			for (int pos = 0; pos < 9; ++pos) {
-				inputDigits.add(nextInputDigit(i, pos, lines));
-				
+				inputNumber.add(nextInputDigit(i, pos, lines));
+
 			}
+			inputNumbers.add(inputNumber);
+		}
+		for (InputNumber inputNumber : inputNumbers) {
 			StringBuilder sb = new StringBuilder();
 			String marker = "    ";
-			for (List<String> inputDigit: inputDigits) {	
+			for (InputDigit inputDigit : inputNumber) {
 				sb.append(parseNextDigit(inputDigit));
 			}
 			if (sb.indexOf("?") > -1) {
@@ -52,11 +57,11 @@ public class Ocr {
 			sb.append(marker);
 			result.add(sb.toString());
 		}
-		
+
 		return result;
 	}
 
-	private static String parseNextDigit(List<String> inputDigit) {
+	private static String parseNextDigit(InputDigit inputDigit) {
 		String appendage = "?";
 		for (Blueprint current : blueprints) {
 			int foundDigit = current.correspondsTo(inputDigit);
@@ -68,17 +73,72 @@ public class Ocr {
 		return appendage;
 	}
 
-	private static List<String> nextInputDigit(int i, int pos, String... lines) {
-		List<String> block = new ArrayList<String>();
-		block.add(lines[i].substring(4 * pos, 4 * pos + 4));
-		block.add(lines[i + 1].substring(4 * pos, 4 * pos + 4));
-		block.add(lines[i + 2].substring(4 * pos, 4 * pos + 4));
-		block.add(lines[i + 3].substring(4 * pos, 4 * pos + 4));
-		return block;
+	private static InputDigit nextInputDigit(int i, int pos, String... lines) {
+		InputDigit inputDigit = new InputDigit();
+		inputDigit.add(lines[i + 0].substring(4 * pos, 4 * pos + 4));
+		inputDigit.add(lines[i + 1].substring(4 * pos, 4 * pos + 4));
+		inputDigit.add(lines[i + 2].substring(4 * pos, 4 * pos + 4));
+		inputDigit.add(lines[i + 3].substring(4 * pos, 4 * pos + 4));
+		return inputDigit;
 	}
 }
 
-class Block {
-	ArrayList<List<String>> blocks = new ArrayList<List<String>>();
+class InputDigit{
+	ArrayList<String> input = new ArrayList<String>();
+
+	public void add(String partialLine) {
+		input.add(partialLine);
+
+	}
+
+	public String get(int lineNumber) {
+		return input.get(lineNumber);
+	}
+
+}
+
+class InputNumber implements Iterable<InputDigit>{
+	ArrayList<InputDigit> inputAccountNumber = new ArrayList<InputDigit>();
+
+	public void add(InputDigit inputDigit) {
+		inputAccountNumber.add(inputDigit);
+
+	}
+
+	@Override
+	public Iterator<InputDigit> iterator() {
+		
+		return new InputIterator(inputAccountNumber);
+	}
 	
+
+	public int size() {
+		return inputAccountNumber.size();
+	}
+
+	public InputDigit get(int cursor) {
+		return inputAccountNumber.get(cursor);
+	}
+
+	class InputIterator implements Iterator<InputDigit> {
+		
+		private int cursor;
+		private ArrayList<InputDigit> inputNumber;
+		
+		public InputIterator(ArrayList<InputDigit> list) {
+			cursor = 0;
+			inputNumber = list;
+		}
+		
+		@Override
+		public boolean hasNext() {
+			return (cursor < inputNumber.size());
+		}
+		
+		@Override
+		public InputDigit next() {
+			return inputNumber.get(cursor++);
+		}
+		
+	}
 }

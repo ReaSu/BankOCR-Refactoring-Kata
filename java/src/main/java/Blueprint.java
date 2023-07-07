@@ -3,7 +3,7 @@ import java.util.List;
 
 interface Blueprint {
 
-	public static int correspondsTo(List<String> input, List<String> image, int number) {
+	public static int correspondsTo(InputDigit input, List<String> image, int number) {
 		for (int i = 0; i < 4; i++) {
 			if (!image.get(i).equals(input.get(i))) {
 				return -1;
@@ -12,7 +12,7 @@ interface Blueprint {
 		return number;
 	}
 
-	int correspondsTo(List<String> block);
+	int correspondsTo(InputDigit inputDigit);
 
 }
 
@@ -24,7 +24,7 @@ class NumberZero implements Blueprint {
 			"    ");
 	int digit = 0;
 	
-	public int correspondsTo(List<String> input) {
+	public int correspondsTo(InputDigit input) {
 		return Blueprint.correspondsTo(input, image, digit);
 	}
 }
@@ -37,7 +37,7 @@ class NumberOne implements Blueprint {
 			"    ");
 	int digit = 1;
 	
-	public int correspondsTo(List<String> input) {
+	public int correspondsTo(InputDigit input) {
 		return Blueprint.correspondsTo(input, image, digit);
 	}
 }
@@ -50,7 +50,7 @@ class NumberTwo implements Blueprint {
 			"    ");
 	int digit = 2;
 	
-	public int correspondsTo(List<String> input) {
+	public int correspondsTo(InputDigit input) {
 		return Blueprint.correspondsTo(input, image, digit);
 	}
 }
@@ -63,7 +63,7 @@ class NumberThree implements Blueprint {
 			"    ");
 	int digit = 3;
 	
-	public int correspondsTo(List<String> input) {
+	public int correspondsTo(InputDigit input) {
 		return Blueprint.correspondsTo(input, image, digit);
 	}
 }
@@ -76,7 +76,7 @@ class NumberFour implements Blueprint {
 			"    ");
 	int digit = 4;
 	
-	public int correspondsTo(List<String> input) {
+	public int correspondsTo(InputDigit input) {
 		return Blueprint.correspondsTo(input, image, digit);
 	}
 }
@@ -89,7 +89,7 @@ class NumberFive implements Blueprint {
 			"    ");
 	int digit = 5;
 	
-	public int correspondsTo(List<String> input) {
+	public int correspondsTo(InputDigit input) {
 		return Blueprint.correspondsTo(input, image, digit);
 	}
 }
@@ -102,7 +102,7 @@ class NumberSix implements Blueprint {
 			"    ");
 	int digit = 6;
 	
-	public int correspondsTo(List<String> input) {
+	public int correspondsTo(InputDigit input) {
 		return Blueprint.correspondsTo(input, image, digit);
 	}
 }
@@ -115,7 +115,7 @@ class NumberSeven implements Blueprint {
 			"    ");
 	int digit = 7;
 	
-	public int correspondsTo(List<String> input) {
+	public int correspondsTo(InputDigit input) {
 		return Blueprint.correspondsTo(input, image, digit);
 	}
 }
@@ -128,7 +128,7 @@ class NumberEight implements Blueprint {
 			"    ");
 	int digit = 8;
 	
-	public int correspondsTo(List<String> input) {
+	public int correspondsTo(InputDigit input) {
 		return Blueprint.correspondsTo(input, image, digit);
 	}
 }
@@ -141,7 +141,7 @@ class NumberNine implements Blueprint {
 			"    ");
 	int digit = 9;
 	
-	public int correspondsTo(List<String> input) {
+	public int correspondsTo(InputDigit input) {
 		return Blueprint.correspondsTo(input, image, digit);
 	}
 }
