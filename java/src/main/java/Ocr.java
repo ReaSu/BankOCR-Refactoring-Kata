@@ -1,6 +1,5 @@
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.List;
 
 /*
@@ -19,7 +18,7 @@ import java.util.List;
 public class Ocr {
 	static List<Blueprint> blueprints = new ArrayList<Blueprint>();
 
-	static List<Blueprint> initBlueprints() {
+	static void initBlueprints() {
 		Blueprint zero = new NumberZero();
 		Blueprint one = new NumberOne();
 		Blueprint two = new NumberTwo();
@@ -30,17 +29,16 @@ public class Ocr {
 		Blueprint seven = new NumberSeven();
 		Blueprint eight = new NumberEight();
 		Blueprint nine = new NumberNine();
-		return Arrays.asList(zero, one, two, three, four, five, six, seven, eight, nine);
+		blueprints.addAll(Arrays.asList(zero, one, two, three, four, five, six, seven, eight, nine));
 	}
 
 	public static List<String> parse(String... lines) {
-		blueprints.addAll(initBlueprints());
+		initBlueprints();
 		final List<String> result = new ArrayList<String>();
-		List<InputNumber> inputNumbers = parseInput(lines);		
+		List<InputNumber> inputNumbers = parseInput(lines);
 		for (InputNumber inputNumber : inputNumbers) {
 			result.add(translateNumber(inputNumber));
 		}
-
 		return result;
 	}
 
@@ -89,65 +87,5 @@ public class Ocr {
 		inputDigit.add(lines[i + 2].substring(4 * pos, 4 * pos + 4));
 		inputDigit.add(lines[i + 3].substring(4 * pos, 4 * pos + 4));
 		return inputDigit;
-	}
-}
-
-class InputDigit{
-	ArrayList<String> input = new ArrayList<String>();
-
-	public void add(String partialLine) {
-		input.add(partialLine);
-
-	}
-
-	public String get(int lineNumber) {
-		return input.get(lineNumber);
-	}
-
-}
-
-class InputNumber implements Iterable<InputDigit>{
-	ArrayList<InputDigit> inputAccountNumber = new ArrayList<InputDigit>();
-
-	public void add(InputDigit inputDigit) {
-		inputAccountNumber.add(inputDigit);
-
-	}
-
-	@Override
-	public Iterator<InputDigit> iterator() {
-		
-		return new InputIterator(inputAccountNumber);
-	}
-	
-
-	public int size() {
-		return inputAccountNumber.size();
-	}
-
-	public InputDigit get(int cursor) {
-		return inputAccountNumber.get(cursor);
-	}
-
-	class InputIterator implements Iterator<InputDigit> {
-		
-		private int cursor;
-		private ArrayList<InputDigit> inputNumber;
-		
-		public InputIterator(ArrayList<InputDigit> list) {
-			cursor = 0;
-			inputNumber = list;
-		}
-		
-		@Override
-		public boolean hasNext() {
-			return (cursor < inputNumber.size());
-		}
-		
-		@Override
-		public InputDigit next() {
-			return inputNumber.get(cursor++);
-		}
-		
 	}
 }
