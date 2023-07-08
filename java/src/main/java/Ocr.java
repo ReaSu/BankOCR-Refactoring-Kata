@@ -3,54 +3,54 @@ import java.util.Arrays;
 import java.util.List;
 
 /*
- * Input consists of lines.
- * 4 lines are an inputNumber
- * each inputNumber is made up of 9 inputDigits (blocks)
+ * Input consists of lines, each represented by a string.
+ * 4 lines are an AccountNumber
+ * each AccountNumber is made up of 9 inputDigits
  * each inputDigit is 4 chars wide (and 4 lines tall - cf. inputNumber)
  * 
- * Output consists of accountNumbers
- * each accountNumber is made up of 9 digits (or ?) plus a marker
+ * Output consists of accountNumbers plus a marker
+ * each accountNumber is made up of 9 digits (or ?)
  * a marker is 4 chars wide, and either empty (spaces) or " ILL" if accountNumber contains at least one "?"
  * 
- * There's a blueprint of each digit, input is compared to those for translation.
+ * There is a list of known character representations, input is compared to those for translation.
  */
 
 public class Ocr {
 	public static List<String> parse(String... lines) {
 		List<String> result = new ArrayList<String>();
-		InputParser parser = new InputParser(lines);
-		List<InputAccountNumber> inputAccountNumbers = parser.partition();
-		Recogniser recogniser = new Recogniser();
-		for (InputAccountNumber inputAccountNumber : inputAccountNumbers) {
-			result.add(recogniser.recognise(inputAccountNumber));
+		InputParser parser = new InputParser();
+		Translator translator = new Translator();
+		List<AccountNumber> inputAccountNumbers = parser.segment(lines);
+		for (AccountNumber inputAccountNumber : inputAccountNumbers) {
+			result.add(translator.translate(inputAccountNumber));
 		}
 		return result;
 	}
-	
+
 }
 
-class Recogniser {
-	private List<Blueprint> blueprints = new ArrayList<Blueprint>();
-	
-	public Recogniser() {
+class Translator {
+	private List<KnownChars> knownChars = new ArrayList<KnownChars>();
+
+	public Translator() {
 		initBlueprints();
 	}
 
 	void initBlueprints() {
-		Blueprint zero = new Zero();
-		Blueprint one = new One();
-		Blueprint two = new Two();
-		Blueprint three = new Three();
-		Blueprint four = new Four();
-		Blueprint five = new Five();
-		Blueprint six = new Six();
-		Blueprint seven = new Seven();
-		Blueprint eight = new Eight();
-		Blueprint nine = new Nine();
-		blueprints.addAll(Arrays.asList(zero, one, two, three, four, five, six, seven, eight, nine));
+		KnownChars zero = new Zero();
+		KnownChars one = new One();
+		KnownChars two = new Two();
+		KnownChars three = new Three();
+		KnownChars four = new Four();
+		KnownChars five = new Five();
+		KnownChars six = new Six();
+		KnownChars seven = new Seven();
+		KnownChars eight = new Eight();
+		KnownChars nine = new Nine();
+		knownChars.addAll(Arrays.asList(zero, one, two, three, four, five, six, seven, eight, nine));
 	}
-	
-	String recognise(InputAccountNumber input) {
+
+	String translate(AccountNumber input) {
 		StringBuilder sb = new StringBuilder();
 		String marker = "    ";
 		for (InputDigit digit : input) {
@@ -62,10 +62,10 @@ class Recogniser {
 		sb.append(marker);
 		return sb.toString();
 	}
-	
+
 	private String parseNext(InputDigit inputDigit) {
 		String appendage = "?";
-		for (Blueprint current : blueprints) {
+		for (KnownChars current : knownChars) {
 			int foundDigit = current.correspondsTo(inputDigit);
 			if (foundDigit != -1) {
 				appendage = String.valueOf(foundDigit);
@@ -74,38 +74,36 @@ class Recogniser {
 		}
 		return appendage;
 	}
-	
+
 	private boolean isIllegal(StringBuilder sb) {
 		return sb.indexOf("?") > -1;
 	}
 }
 
 class InputParser {
-	private String[] lines;
 
-	InputParser(String[] lines) {
-		this.lines = lines;
-	}
+	private static final int ACCOUNT_NUMBER_LENGTH = 9;
+	private static final int CHAR_HEIGHT = 4;
+	private static final int CHAR_WIDTH = 4;
 
-	List<InputAccountNumber> partition() {
-		List<InputAccountNumber> inputNumbers = new ArrayList<InputAccountNumber>();
-		for (int i = 0; i < lines.length; i += 4) {
-			InputAccountNumber inputNumber = new InputAccountNumber();
-			for (int pos = 0; pos < 9; ++pos) {
-				inputNumber.add(nextInputDigit(i, pos, lines));
-				
+	List<AccountNumber> segment(String[] input) {
+		List<AccountNumber> accountNumbers = new ArrayList<AccountNumber>();
+		for (int line = 0; line < input.length; line += CHAR_HEIGHT) {
+			AccountNumber accountNumber = new AccountNumber();
+			for (int digit = 0; digit < ACCOUNT_NUMBER_LENGTH; ++digit) {
+				accountNumber.add(nextInputDigit(line, digit, input));
+
 			}
-			inputNumbers.add(inputNumber);
+			accountNumbers.add(accountNumber);
 		}
-		return inputNumbers;
+		return accountNumbers;
 	}
 
-	private InputDigit nextInputDigit(int i, int pos, String... lines) {
+	private InputDigit nextInputDigit(int line, int position, String[] input) {
 		InputDigit inputDigit = new InputDigit();
-		inputDigit.add(lines[i + 0].substring(4 * pos, 4 * pos + 4));
-		inputDigit.add(lines[i + 1].substring(4 * pos, 4 * pos + 4));
-		inputDigit.add(lines[i + 2].substring(4 * pos, 4 * pos + 4));
-		inputDigit.add(lines[i + 3].substring(4 * pos, 4 * pos + 4));
+		for (int i = 0; i < CHAR_HEIGHT; i++) {
+			inputDigit.add(input[line + i].substring(CHAR_WIDTH * position, CHAR_WIDTH * position + CHAR_WIDTH));
+		}
 		return inputDigit;
 	}
 }

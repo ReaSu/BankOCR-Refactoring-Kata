@@ -1,7 +1,7 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 
-class InputAccountNumber implements Iterable<InputDigit> {
+class AccountNumber implements Iterable<InputDigit> {
 	ArrayList<InputDigit> inputAccountNumber = new ArrayList<InputDigit>();
 
 	public void add(InputDigit inputDigit) {

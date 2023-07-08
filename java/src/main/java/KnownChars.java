@@ -1,7 +1,7 @@
 import java.util.Arrays;
 import java.util.List;
 
-class Blueprint {
+class KnownChars {
 	public static int correspondsTo(InputDigit input, List<String> image, int number) {
 		for (int i = 0; i < 4; i++) {
 			if (!image.get(i).equals(input.get(i))) {
@@ -17,7 +17,7 @@ class Blueprint {
 	}
 }
 
-class Zero extends Blueprint {
+class Zero extends KnownChars {
 	List<String> image = Arrays.asList(
 			" _  ", 
 			"| | ", 
@@ -26,11 +26,11 @@ class Zero extends Blueprint {
 	int digit = 0;
 	
 	public int correspondsTo(InputDigit input) {
-		return Blueprint.correspondsTo(input, image, digit);
+		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
 
-class One extends Blueprint {
+class One extends KnownChars {
 	List<String> image = Arrays.asList(
 			"    ",
 			"  | ",
@@ -39,11 +39,11 @@ class One extends Blueprint {
 	int digit = 1;
 	
 	public int correspondsTo(InputDigit input) {
-		return Blueprint.correspondsTo(input, image, digit);
+		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
 
-class Two extends Blueprint {
+class Two extends KnownChars {
 	List<String> image = Arrays.asList(
 			" _  ", 
 			" _| ", 
@@ -52,11 +52,11 @@ class Two extends Blueprint {
 	int digit = 2;
 	
 	public int correspondsTo(InputDigit input) {
-		return Blueprint.correspondsTo(input, image, digit);
+		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
 
-class Three extends Blueprint {
+class Three extends KnownChars {
 	List<String> image = Arrays.asList(
 			" _  ", 
 			" _| ", 
@@ -65,11 +65,11 @@ class Three extends Blueprint {
 	int digit = 3;
 	
 	public int correspondsTo(InputDigit input) {
-		return Blueprint.correspondsTo(input, image, digit);
+		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
 
-class Four extends Blueprint {
+class Four extends KnownChars {
 	List<String> image = Arrays.asList(
 			"    ", 
 			"|_| ", 
@@ -78,11 +78,11 @@ class Four extends Blueprint {
 	int digit = 4;
 	
 	public int correspondsTo(InputDigit input) {
-		return Blueprint.correspondsTo(input, image, digit);
+		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
 
-class Five extends Blueprint {
+class Five extends KnownChars {
 	List<String> image = Arrays.asList(
 			" _  ", 
 			"|_  ", 
@@ -91,11 +91,11 @@ class Five extends Blueprint {
 	int digit = 5;
 	
 	public int correspondsTo(InputDigit input) {
-		return Blueprint.correspondsTo(input, image, digit);
+		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
 
-class Six extends Blueprint {
+class Six extends KnownChars {
 	List<String> image = Arrays.asList(
 			" _  ", 
 			"|_  ", 
@@ -104,11 +104,11 @@ class Six extends Blueprint {
 	int digit = 6;
 	
 	public int correspondsTo(InputDigit input) {
-		return Blueprint.correspondsTo(input, image, digit);
+		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
 
-class Seven extends Blueprint {
+class Seven extends KnownChars {
 	List<String> image = Arrays.asList(
 			" _  ",
 			"  | ",
@@ -117,11 +117,11 @@ class Seven extends Blueprint {
 	int digit = 7;
 	
 	public int correspondsTo(InputDigit input) {
-		return Blueprint.correspondsTo(input, image, digit);
+		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
 
-class Eight extends Blueprint {
+class Eight extends KnownChars {
 	List<String> image = Arrays.asList(
 			" _  ", 
 			"|_| ", 
@@ -130,11 +130,11 @@ class Eight extends Blueprint {
 	int digit = 8;
 	
 	public int correspondsTo(InputDigit input) {
-		return Blueprint.correspondsTo(input, image, digit);
+		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
 
-class Nine extends Blueprint {
+class Nine extends KnownChars {
 	List<String> image = Arrays.asList(
 			" _  ", 
 			"|_| ", 
@@ -143,6 +143,6 @@ class Nine extends Blueprint {
 	int digit = 9;
 	
 	public int correspondsTo(InputDigit input) {
-		return Blueprint.correspondsTo(input, image, digit);
+		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
