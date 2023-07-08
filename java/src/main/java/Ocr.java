@@ -34,27 +34,15 @@ public class Ocr {
 
 	public static List<String> parse(String... lines) {
 		initBlueprints();
-		final List<String> result = new ArrayList<String>();
-		List<InputAccountNumber> inputAccountNumbers = partition(lines);
+		List<String> result = new ArrayList<String>();
+		InputParser parser = new InputParser(lines);
+		List<InputAccountNumber> inputAccountNumbers = parser.partition();
 		for (InputAccountNumber inputAccountNumber : inputAccountNumbers) {
 			result.add(recogniseCharacter(inputAccountNumber));
 		}
 		return result;
 	}
 	
-	private static List<InputAccountNumber> partition(String... lines) {
-		List<InputAccountNumber> inputNumbers = new ArrayList<InputAccountNumber>();
-		for (int i = 0; i < lines.length; i += 4) {
-			InputAccountNumber inputNumber = new InputAccountNumber();
-			for (int pos = 0; pos < 9; ++pos) {
-				inputNumber.add(nextInputDigit(i, pos, lines));
-				
-			}
-			inputNumbers.add(inputNumber);
-		}
-		return inputNumbers;
-	}
-
 	private static String recogniseCharacter(InputAccountNumber input) {
 		StringBuilder sb = new StringBuilder();
 		String marker = "    ";
@@ -83,8 +71,29 @@ public class Ocr {
 	private static boolean isIllegal(StringBuilder sb) {
 		return sb.indexOf("?") > -1;
 	}
+}
 
-	private static InputDigit nextInputDigit(int i, int pos, String... lines) {
+class InputParser {
+	private String[] lines;
+
+	InputParser(String[] lines) {
+		this.lines = lines;
+	}
+
+	List<InputAccountNumber> partition() {
+		List<InputAccountNumber> inputNumbers = new ArrayList<InputAccountNumber>();
+		for (int i = 0; i < lines.length; i += 4) {
+			InputAccountNumber inputNumber = new InputAccountNumber();
+			for (int pos = 0; pos < 9; ++pos) {
+				inputNumber.add(nextInputDigit(i, pos, lines));
+				
+			}
+			inputNumbers.add(inputNumber);
+		}
+		return inputNumbers;
+	}
+
+	private InputDigit nextInputDigit(int i, int pos, String... lines) {
 		InputDigit inputDigit = new InputDigit();
 		inputDigit.add(lines[i + 0].substring(4 * pos, 4 * pos + 4));
 		inputDigit.add(lines[i + 1].substring(4 * pos, 4 * pos + 4));
