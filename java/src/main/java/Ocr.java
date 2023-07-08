@@ -16,9 +16,27 @@ import java.util.List;
  */
 
 public class Ocr {
-	static List<Blueprint> blueprints = new ArrayList<Blueprint>();
+	public static List<String> parse(String... lines) {
+		List<String> result = new ArrayList<String>();
+		InputParser parser = new InputParser(lines);
+		List<InputAccountNumber> inputAccountNumbers = parser.partition();
+		Recogniser recogniser = new Recogniser();
+		for (InputAccountNumber inputAccountNumber : inputAccountNumbers) {
+			result.add(recogniser.recognise(inputAccountNumber));
+		}
+		return result;
+	}
+	
+}
 
-	static void initBlueprints() {
+class Recogniser {
+	private List<Blueprint> blueprints = new ArrayList<Blueprint>();
+	
+	public Recogniser() {
+		initBlueprints();
+	}
+
+	void initBlueprints() {
 		Blueprint zero = new Zero();
 		Blueprint one = new One();
 		Blueprint two = new Two();
@@ -31,19 +49,8 @@ public class Ocr {
 		Blueprint nine = new Nine();
 		blueprints.addAll(Arrays.asList(zero, one, two, three, four, five, six, seven, eight, nine));
 	}
-
-	public static List<String> parse(String... lines) {
-		initBlueprints();
-		List<String> result = new ArrayList<String>();
-		InputParser parser = new InputParser(lines);
-		List<InputAccountNumber> inputAccountNumbers = parser.partition();
-		for (InputAccountNumber inputAccountNumber : inputAccountNumbers) {
-			result.add(recogniseCharacter(inputAccountNumber));
-		}
-		return result;
-	}
 	
-	private static String recogniseCharacter(InputAccountNumber input) {
+	String recognise(InputAccountNumber input) {
 		StringBuilder sb = new StringBuilder();
 		String marker = "    ";
 		for (InputDigit digit : input) {
@@ -56,7 +63,7 @@ public class Ocr {
 		return sb.toString();
 	}
 	
-	private static String parseNext(InputDigit inputDigit) {
+	private String parseNext(InputDigit inputDigit) {
 		String appendage = "?";
 		for (Blueprint current : blueprints) {
 			int foundDigit = current.correspondsTo(inputDigit);
@@ -67,8 +74,8 @@ public class Ocr {
 		}
 		return appendage;
 	}
-
-	private static boolean isIllegal(StringBuilder sb) {
+	
+	private boolean isIllegal(StringBuilder sb) {
 		return sb.indexOf("?") > -1;
 	}
 }
