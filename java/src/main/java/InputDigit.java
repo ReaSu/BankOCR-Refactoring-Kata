@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 
 class InputDigit {
+
 	ArrayList<String> input = new ArrayList<String>();
 
 	public void add(String partialLine) {

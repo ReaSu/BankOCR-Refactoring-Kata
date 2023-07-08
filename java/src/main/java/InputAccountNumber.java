@@ -1,17 +1,15 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 
-class InputNumber implements Iterable<InputDigit> {
+class InputAccountNumber implements Iterable<InputDigit> {
 	ArrayList<InputDigit> inputAccountNumber = new ArrayList<InputDigit>();
 
 	public void add(InputDigit inputDigit) {
 		inputAccountNumber.add(inputDigit);
-
 	}
 
 	@Override
 	public Iterator<InputDigit> iterator() {
-
 		return new InputIterator(inputAccountNumber);
 	}
 

@@ -19,56 +19,56 @@ public class Ocr {
 	static List<Blueprint> blueprints = new ArrayList<Blueprint>();
 
 	static void initBlueprints() {
-		Blueprint zero = new NumberZero();
-		Blueprint one = new NumberOne();
-		Blueprint two = new NumberTwo();
-		Blueprint three = new NumberThree();
-		Blueprint four = new NumberFour();
-		Blueprint five = new NumberFive();
-		Blueprint six = new NumberSix();
-		Blueprint seven = new NumberSeven();
-		Blueprint eight = new NumberEight();
-		Blueprint nine = new NumberNine();
+		Blueprint zero = new Zero();
+		Blueprint one = new One();
+		Blueprint two = new Two();
+		Blueprint three = new Three();
+		Blueprint four = new Four();
+		Blueprint five = new Five();
+		Blueprint six = new Six();
+		Blueprint seven = new Seven();
+		Blueprint eight = new Eight();
+		Blueprint nine = new Nine();
 		blueprints.addAll(Arrays.asList(zero, one, two, three, four, five, six, seven, eight, nine));
 	}
 
 	public static List<String> parse(String... lines) {
 		initBlueprints();
 		final List<String> result = new ArrayList<String>();
-		List<InputNumber> inputNumbers = parseInput(lines);
-		for (InputNumber inputNumber : inputNumbers) {
-			result.add(translateNumber(inputNumber));
+		List<InputAccountNumber> inputAccountNumbers = partition(lines);
+		for (InputAccountNumber inputAccountNumber : inputAccountNumbers) {
+			result.add(recogniseCharacter(inputAccountNumber));
 		}
 		return result;
 	}
-
-	private static String translateNumber(InputNumber inputNumber) {
-		StringBuilder sb = new StringBuilder();
-		String marker = "    ";
-		for (InputDigit inputDigit : inputNumber) {
-			sb.append(parseNextDigit(inputDigit));
-		}
-		if (sb.indexOf("?") > -1) {
-			marker = " ILL";
-		}
-		sb.append(marker);
-		return sb.toString();
-	}
-
-	private static List<InputNumber> parseInput(String... lines) {
-		List<InputNumber> inputNumbers = new ArrayList<InputNumber>();
+	
+	private static List<InputAccountNumber> partition(String... lines) {
+		List<InputAccountNumber> inputNumbers = new ArrayList<InputAccountNumber>();
 		for (int i = 0; i < lines.length; i += 4) {
-			InputNumber inputNumber = new InputNumber();
+			InputAccountNumber inputNumber = new InputAccountNumber();
 			for (int pos = 0; pos < 9; ++pos) {
 				inputNumber.add(nextInputDigit(i, pos, lines));
-
+				
 			}
 			inputNumbers.add(inputNumber);
 		}
 		return inputNumbers;
 	}
 
-	private static String parseNextDigit(InputDigit inputDigit) {
+	private static String recogniseCharacter(InputAccountNumber input) {
+		StringBuilder sb = new StringBuilder();
+		String marker = "    ";
+		for (InputDigit digit : input) {
+			sb.append(parseNext(digit));
+		}
+		if (isIllegal(sb)) {
+			marker = " ILL";
+		}
+		sb.append(marker);
+		return sb.toString();
+	}
+	
+	private static String parseNext(InputDigit inputDigit) {
 		String appendage = "?";
 		for (Blueprint current : blueprints) {
 			int foundDigit = current.correspondsTo(inputDigit);
@@ -78,6 +78,10 @@ public class Ocr {
 			}
 		}
 		return appendage;
+	}
+
+	private static boolean isIllegal(StringBuilder sb) {
+		return sb.indexOf("?") > -1;
 	}
 
 	private static InputDigit nextInputDigit(int i, int pos, String... lines) {

@@ -1,8 +1,7 @@
 import java.util.Arrays;
 import java.util.List;
 
-interface Blueprint {
-
+class Blueprint {
 	public static int correspondsTo(InputDigit input, List<String> image, int number) {
 		for (int i = 0; i < 4; i++) {
 			if (!image.get(i).equals(input.get(i))) {
@@ -12,11 +11,13 @@ interface Blueprint {
 		return number;
 	}
 
-	int correspondsTo(InputDigit inputDigit);
-
+	public int correspondsTo(InputDigit inputDigit) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 }
 
-class NumberZero implements Blueprint {
+class Zero extends Blueprint {
 	List<String> image = Arrays.asList(
 			" _  ", 
 			"| | ", 
@@ -29,7 +30,7 @@ class NumberZero implements Blueprint {
 	}
 }
 
-class NumberOne implements Blueprint {
+class One extends Blueprint {
 	List<String> image = Arrays.asList(
 			"    ",
 			"  | ",
@@ -42,7 +43,7 @@ class NumberOne implements Blueprint {
 	}
 }
 
-class NumberTwo implements Blueprint {
+class Two extends Blueprint {
 	List<String> image = Arrays.asList(
 			" _  ", 
 			" _| ", 
@@ -55,7 +56,7 @@ class NumberTwo implements Blueprint {
 	}
 }
 
-class NumberThree implements Blueprint {
+class Three extends Blueprint {
 	List<String> image = Arrays.asList(
 			" _  ", 
 			" _| ", 
@@ -68,7 +69,7 @@ class NumberThree implements Blueprint {
 	}
 }
 
-class NumberFour implements Blueprint {
+class Four extends Blueprint {
 	List<String> image = Arrays.asList(
 			"    ", 
 			"|_| ", 
@@ -81,7 +82,7 @@ class NumberFour implements Blueprint {
 	}
 }
 
-class NumberFive implements Blueprint {
+class Five extends Blueprint {
 	List<String> image = Arrays.asList(
 			" _  ", 
 			"|_  ", 
@@ -94,7 +95,7 @@ class NumberFive implements Blueprint {
 	}
 }
 
-class NumberSix implements Blueprint {
+class Six extends Blueprint {
 	List<String> image = Arrays.asList(
 			" _  ", 
 			"|_  ", 
@@ -107,7 +108,7 @@ class NumberSix implements Blueprint {
 	}
 }
 
-class NumberSeven implements Blueprint {
+class Seven extends Blueprint {
 	List<String> image = Arrays.asList(
 			" _  ",
 			"  | ",
@@ -120,7 +121,7 @@ class NumberSeven implements Blueprint {
 	}
 }
 
-class NumberEight implements Blueprint {
+class Eight extends Blueprint {
 	List<String> image = Arrays.asList(
 			" _  ", 
 			"|_| ", 
@@ -133,7 +134,7 @@ class NumberEight implements Blueprint {
 	}
 }
 
-class NumberNine implements Blueprint {
+class Nine extends Blueprint {
 	List<String> image = Arrays.asList(
 			" _  ", 
 			"|_| ", 
