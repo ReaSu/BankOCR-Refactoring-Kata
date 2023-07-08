@@ -2,7 +2,7 @@ import java.util.Arrays;
 import java.util.List;
 
 class KnownChars {
-	public static int correspondsTo(InputDigit input, List<String> image, int number) {
+	public static int correspondsTo(Digit input, List<String> image, int number) {
 		for (int i = 0; i < 4; i++) {
 			if (!image.get(i).equals(input.get(i))) {
 				return -1;
@@ -11,7 +11,7 @@ class KnownChars {
 		return number;
 	}
 
-	public int correspondsTo(InputDigit inputDigit) {
+	public int correspondsTo(Digit inputDigit) {
 		// TODO Auto-generated method stub
 		return 0;
 	}
@@ -25,7 +25,7 @@ class Zero extends KnownChars {
 			"    ");
 	int digit = 0;
 	
-	public int correspondsTo(InputDigit input) {
+	public int correspondsTo(Digit input) {
 		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
@@ -38,7 +38,7 @@ class One extends KnownChars {
 			"    ");
 	int digit = 1;
 	
-	public int correspondsTo(InputDigit input) {
+	public int correspondsTo(Digit input) {
 		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
@@ -51,7 +51,7 @@ class Two extends KnownChars {
 			"    ");
 	int digit = 2;
 	
-	public int correspondsTo(InputDigit input) {
+	public int correspondsTo(Digit input) {
 		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
@@ -64,7 +64,7 @@ class Three extends KnownChars {
 			"    ");
 	int digit = 3;
 	
-	public int correspondsTo(InputDigit input) {
+	public int correspondsTo(Digit input) {
 		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
@@ -77,7 +77,7 @@ class Four extends KnownChars {
 			"    ");
 	int digit = 4;
 	
-	public int correspondsTo(InputDigit input) {
+	public int correspondsTo(Digit input) {
 		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
@@ -90,7 +90,7 @@ class Five extends KnownChars {
 			"    ");
 	int digit = 5;
 	
-	public int correspondsTo(InputDigit input) {
+	public int correspondsTo(Digit input) {
 		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
@@ -103,7 +103,7 @@ class Six extends KnownChars {
 			"    ");
 	int digit = 6;
 	
-	public int correspondsTo(InputDigit input) {
+	public int correspondsTo(Digit input) {
 		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
@@ -116,7 +116,7 @@ class Seven extends KnownChars {
 			"    ");
 	int digit = 7;
 	
-	public int correspondsTo(InputDigit input) {
+	public int correspondsTo(Digit input) {
 		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
@@ -129,7 +129,7 @@ class Eight extends KnownChars {
 			"    ");
 	int digit = 8;
 	
-	public int correspondsTo(InputDigit input) {
+	public int correspondsTo(Digit input) {
 		return KnownChars.correspondsTo(input, image, digit);
 	}
 }
@@ -142,7 +142,7 @@ class Nine extends KnownChars {
 			"    ");
 	int digit = 9;
 	
-	public int correspondsTo(InputDigit input) {
+	public int correspondsTo(Digit input) {
 		return KnownChars.correspondsTo(input, image, digit);
 	}
 }

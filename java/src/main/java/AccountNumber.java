@@ -1,44 +1,42 @@
 import java.util.ArrayList;
 import java.util.Iterator;
 
-class AccountNumber implements Iterable<InputDigit> {
-	ArrayList<InputDigit> inputAccountNumber = new ArrayList<InputDigit>();
+class AccountNumber implements Iterable<Digit> {
+	ArrayList<Digit> accountNumber = new ArrayList<Digit>();
 
-	public void add(InputDigit inputDigit) {
-		inputAccountNumber.add(inputDigit);
+	public void add(Digit digit) {
+		accountNumber.add(digit);
 	}
 
-	@Override
-	public Iterator<InputDigit> iterator() {
-		return new InputIterator(inputAccountNumber);
+	public Digit get(int cursor) {
+		return accountNumber.get(cursor);
 	}
 
 	public int size() {
-		return inputAccountNumber.size();
+		return accountNumber.size();
+	}
+	
+	@Override
+	public Iterator<Digit> iterator() {
+		return new AccountNumberIterator();
 	}
 
-	public InputDigit get(int cursor) {
-		return inputAccountNumber.get(cursor);
-	}
-
-	class InputIterator implements Iterator<InputDigit> {
+	class AccountNumberIterator implements Iterator<Digit> {
 
 		private int cursor;
-		private ArrayList<InputDigit> inputNumber;
 
-		public InputIterator(ArrayList<InputDigit> list) {
+		public AccountNumberIterator() {
 			cursor = 0;
-			inputNumber = list;
 		}
 
 		@Override
 		public boolean hasNext() {
-			return (cursor < inputNumber.size());
+			return (cursor < accountNumber.size());
 		}
 
 		@Override
-		public InputDigit next() {
-			return inputNumber.get(cursor++);
+		public Digit next() {
+			return accountNumber.get(cursor++);
 		}
 
 	}
